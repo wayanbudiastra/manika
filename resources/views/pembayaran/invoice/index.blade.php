@@ -15,13 +15,13 @@
                 <i class="flaticon-right-arrow"></i>
               </li>
               <li class="nav-item">
-                <a href="{{url('/registrasi')}}">registrasi</a>
+                <a href="{{url('/pembayaran')}}">Pembayaran</a>
               </li>
               <li class="separator">
                 <i class="flaticon-right-arrow"></i>
               </li>
               <li class="nav-item">
-                <a href="{{url('/registrasi')}}">{{$subtitle}}</a>
+                <a href="{{url('/invoice')}}">{{$subtitle}}</a>
 
               </li>
               <li class="separator">
@@ -56,13 +56,13 @@
                       <thead>
                        <tr>
                         <th>No</th>
-                        <th>No Reg</th>
+                        <th>No Invoice</th>
                         <th>Nama Pasien</th>
                         <th>Dokter</th>
                         <th>Poli</th>
-                        <!-- <th>Usia</th> -->
-                        <th>Tgl Reg</th>
-                        <th>Aksi</th>
+                        <th>Total</th>
+                        <th>Cetak</th>
+                        <th>Cencel</th>
                         </tr>
                       </thead>
                      
@@ -71,17 +71,27 @@
                             <?php $id = Crypt::encrypt($k->id); ?>
                             <tr>
                             <td>{{$no=$no+1}}</td>
-                            <td>{{$k->no_registrasi}}</td>
-                            <td>{{$k->pasien->nama}}</td>
-                            <td>{{$k->dokter->nama_dokter}}</td>
-                            <td>{{$k->poli->nama_poli}}</td>
+                            <td>{{$k->no_invoice}}</td>
+                            <td>{{$k->registrasi1->pasien->nama}}</td>
+                            <td>{{$k->registrasi1->dokter->nama_dokter}}</td>
+                            <td>{{$k->registrasi1->poli->nama_poli}}</td>
                             <!-- <td>{{hitung_usia($k->tgl_lahir)}}</td> -->
-                            <td>{{tgl_indo($k->tgl_reg)}}</td>
-                            <td><a href="{{url('/registrasi/'.$id.'/edit')}}" class="btn btn-warning btn-xs"> <i class="flaticon-right-arrow"></i>update</a>
-                            <form id="cencel-regitrasi" action=" {{url('registrasi/cencel/'.$k->id)}}" method="post">
+                            <td>{{rupiah($k->total_transaksi)}}</td>
+                            <td>
+                              @if($k->invoice > 1)
+                           
+                             <a type="button" class="btn btn-warning btn-xs btn-round" target="_BLANK" href="{{url('invoice/edit/'.$id)}}"><i class="fa fa-print"></i>Copy</a>
+                            @else
+                             <a type="button" class="btn btn-primary btn-xs btn-round"  href="{{url('invoice/show/'.$id)}}"><i class="fa fa-print"></i>Cetak</a>
+                            @endif
+
+                            
+                            </td>
+                             <td>
+                            <form id="cencel-regitrasi" action=" {{url('pembayaran/lanjut/'.$k->id)}}" method="post">
                                                 {{csrf_field()}}
                                                 
-                                                <button type="button" class="btn btn-danger btn-xs" data-id="{{$k->id}}"onclick="confirmCencel('cencel-regitrasi')">Cencel</button>
+                                                <button type="button" class="btn btn-danger btn-xs" onclick="confirmCencel('cencel-regitrasi')">Cencel</button>
                                             </form>
                             
                             </td>
@@ -176,28 +186,26 @@ $(document).ready(function() {
 
 <script>
         function confirmCencel(item_id) {
-        console.log($(this).data('id'));
-         // console.log();
-            // swal({
-            //      title: 'Apakah Anda Yakin batalkan Regitrasi ini?',
-            //       text: "Anda Tidak Akan Dapat Mengembalikannya!",
-            //       type: 'warning',
-            //       buttons:{
-            //       confirm: {
-            //        text : 'Yes, batalkan!',
-            //         className : 'btn btn-success'
-            //       },
-            //       cancel: {
-            //       visible: true,
-            //       className: 'btn btn-danger'
-            //      }
-            //   }
-            // })
-            // .then((willDelete) => {
-            //         if (willDelete) {
-            //             $('#'+item_id).submit();
-            //         } 
-            //     });
+            swal({
+                 title: 'Apakah Anda Yakin Melajutkan Pembayaran?',
+                  text: "Registrasi akan di closing!",
+                  type: 'warning',
+                  buttons:{
+                  confirm: {
+                   text : 'Yes, Lanjutkan!',
+                    className : 'btn btn-success'
+                  },
+                  cancel: {
+                  visible: true,
+                  className: 'btn btn-danger'
+                 }
+              }
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $('#'+item_id).submit();
+                    } 
+                });
         }
     </script>
 @endsection

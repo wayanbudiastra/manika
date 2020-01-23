@@ -257,7 +257,6 @@
 											</ul>
 										</div>
 									</li>
-									
 									<li>
 										<a data-toggle="collapse" href="#subnav4">
 											<span class="sub-item">Produk</span>
@@ -313,6 +312,11 @@
 													</a>
 												</li>
 												<li>
+													<a href="{{url('/perawat')}}">
+														<span class="sub-item">Perawat</span>
+													</a>
+												</li>
+												<li>
 													<a href="{{url('/users')}}">
 														<span class="sub-item">User Login</span>
 													</a>
@@ -325,8 +329,6 @@
 											</ul>
 										</div>
 									  </li>
-									
-									
 								</ul>
 							</div>
 						</li>
@@ -474,6 +476,11 @@
 												<li>
 													<a href="{{url('/pembayaran/show')}}">
 														<span class="sub-item">List Pembayaran</span>
+													</a>
+												</li>
+												<li>
+													<a href="{{url('/invoice')}}">
+														<span class="sub-item">List Invoice</span>
 													</a>
 												</li>
 												<li>

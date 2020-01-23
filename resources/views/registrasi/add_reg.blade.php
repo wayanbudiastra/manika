@@ -64,6 +64,17 @@
                              @endforeach
                   </select>
                   </div>    
+
+                   <div class="form-group">
+                  <label for="exampleInputEmail1">Pilih perawat</label>
+                  <select class="form-control select" name="perawat_id" id="idPerawat">
+                              <option></option>  
+                              @foreach($perawat as $a)
+                              
+                               <option value='{{$a->id}}' >{{$a->nama_perawat}}</option> 
+                             @endforeach
+                  </select>
+                  </div>    
                   <div class="form-group">
                   <label for="exampleInputEmail1">Keterangan</label>
                   <textarea name="keterangan" class="form-control" id="keterangan" cols="30" rows="5"></textarea>
@@ -220,5 +231,6 @@ $(".date").datepicker({
 
 $('#idDokter').select2({placeholder: "Pilih Dokter...", width: '100%'});
 $('#idPoli').select2({placeholder: "Pilih Poli...", width: '100%'});
+$('#idPerawat').select2({placeholder: "Pilih Perawat...", width: '100%'});
 </script>
 @endsection

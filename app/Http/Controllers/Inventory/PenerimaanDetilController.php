@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Inventory;
     use App\model\MasterData\SatuanKecil;
     use App\model\MasterData\SatuanBesar;
     use App\model\Inventory\Penerimaan;
+    use App\model\Inventory\Kartustok;
     use App\model\Inventory\Penerimaan_detil;
     use App\Http\Controllers\Controller;
     use App\Http\Requests\Pembayaran\KasRequest;
@@ -261,7 +262,7 @@ class PenerimaanDetilController extends Controller
                       'stok'=>$stok_akhir]);
               //  ProdukItem::where('id',$k->produk_item_id)->update($produk);
 
-         //      //input kartu stok
+         //        //input kartu stok
                 $kartustok = new KartuStok;
                 $kartustok->periode = GetPeriode();
                 $kartustok->produk_item_id = $findproduk->id;

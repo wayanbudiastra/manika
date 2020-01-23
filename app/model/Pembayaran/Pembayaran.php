@@ -14,6 +14,7 @@ class Pembayaran extends Model
             'id',
             'kas_id',
             'tgl_pembayaran',
+            'no_invoice',
             'registrasi1_id',
             'total_transaksi',
             'total_diskon',
@@ -21,7 +22,9 @@ class Pembayaran extends Model
             'total_pembayaran',
             'kurang_bayar',
             'invoice',
+            'closing',
             'posting',
+            'users_id',
             'iscencel',
             'aktif'
         ];

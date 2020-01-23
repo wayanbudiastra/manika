@@ -16,6 +16,7 @@ class Registrasi1 extends Model
     'pasien_id',
     'ruangan_id',
     'dokter_id',
+    'perawat_id',
     'rujukan',
     'keterangan',
     'tgl_reg',
@@ -37,6 +38,11 @@ class Registrasi1 extends Model
     public function dokter()
     {
         return $this->belongsTo('App\model\MasterData\Dokter');
+    }
+
+     public function perawat()
+    {
+        return $this->belongsTo('App\model\MasterData\Perawat');
     }
 
     // relasi dengan data pembayaran

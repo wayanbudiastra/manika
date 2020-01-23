@@ -51,7 +51,7 @@
                 {{session('gagal')}}
                 </div>  
                  @endif
-                  <div class="table-responsive">
+                  <div class="table-responsive" id="reloadpaginate">
                      @include('pembayaran.pembayaran.paginate')
                   </div>
                 </div>
@@ -76,54 +76,40 @@ $(document).ready(function() {
       });
 
 
-  // $(document).on('click', '#addPayment', function () {
-  //           var id = $(this).data('id');
-  //            console.log(id);
-  //           // $("input[name='nama_item']").val(nama)
-  //           // $("input[name='kode']").val(id)
-  //           //  $("input[name='harga_jual']").val(harga_jual)
-  //            $('#ModalAddPembayaran').load("/load-modal-data-pembayaran/" + id);
-  //            //$('#ModalAddPembayaran').css('overflow', 'auto');
-  //           // $('#ModalAddPembayaran').modal({backdrop: 'static'});
-  //       });
+ $("#errMsgTindakan").prop('hidden', true);
 
-   $(document).off('click', '.addPayment');
-       // $(document).off('click', '.loadmodaltransaksitindakancreate');
-        $(document).on('click', '#addPayment', function (event) {
-          event.preventDefault();
-           var id = $(this).data('id');
-             console.log(id);
-          $("#addPayment").prop('disabled', true);
-         //$('#ModalAddPembayaran').show();
+$('.modal-pembayaran').on('click',function(){
+  console.log($(this).data('id'));
+  var id = $(this).data('id');
 
-          $('#ModalAddPembayaran').load("/load-modal-data-pembayaran/" + id);
-     });
+  let data ;
+  $.ajax({
+    url: '{!!  url('/'); !!}'+"/load-modal-data-pembayaran/" + id,
+    success : m => {
+      data = m.data;
+      const detail = '';
+      var editForm = $('#CreateDataPembayaran');
+      editForm.find('input[name="total1"]').val(to_rupiah(m.total));
+      editForm.find('input[name="total"]').val(m.total);
+      editForm.find('input[name="no_registrasi"]').val(m.no_registrasi);
+      editForm.find('input[name="pasien"]').val(m.pasien);
+      editForm.find('input[name="dokter"]').val(m.dokter);
+      editForm.find('input[name="poli"]').val(m.poli);
+      editForm.find('input[name="terbilang"]').val(m.terbilang+' Rupiah');
+      editForm.find('input[name="id"]').val(m.id);
+      $('#pembayaran').val('');
+      $('#pembayaran').focus();
+      $('#kembali').val('');
+      $('#kembali1').val('');
+       document.getElementById('btnSimpan').innerHTML = '<button disabled style="cursor: not-allowed;" class="btn btn-success btn-round " id="simpanPembayaran"><i class="fa fa-plus"></i>Simpan</button>';
+
+    }
+
+  })
+});
 
 
-
-  $('#multi-filter-select').DataTable( {
-        "pageLength": 5,
-        initComplete: function () {
-          this.api().columns().every( function () {
-            var column = this;
-            var select = $('<select class="form-control"><option value=""></option></select>')
-            .appendTo( $(column.footer()).empty() )
-            .on( 'change', function () {
-              var val = $.fn.dataTable.util.escapeRegex(
-                $(this).val()
-                );
-
-              column
-              .search( val ? '^'+val+'$' : '', true, false )
-              .draw();
-            } );
-
-            column.data().unique().sort().each( function ( d, j ) {
-              select.append( '<option value="'+d+'">'+d+'</option>' )
-            } );
-          } );
-        }
-      });
+ 
 
       // Add Row
       $('#add-row').DataTable({
@@ -144,9 +130,57 @@ $(document).ready(function() {
       });
     });
 
+$(document).on('keyup', '#pembayaran', function(){
+  HitungTotalKembalian();
+});
+
+
+$(document).on('click', '#simpanPembayaran', function(){
+// console.log('bayar');
+ $.ajax({
+    url: '{!!  url('/'); !!}'+'/pembayaran-simpam-invoice',
+    data: new FormData($("#CreateDataPembayaran")[0]),
+    dataType: 'json',
+    async: false,
+    type: 'post',
+    processData: false,
+    contentType: false,
+    success: function (response) {
+
+                        $(".showloading").prop('disabled', true);
+                        // $('.modal-pembayaran').modal('dismis');
+                        location.reload();  
+                        $.notify({
+                            // options
+                            message: 'Data Berhasil Di Simpan'
+                        }, {
+                            // settings
+                            time: 5000,
+                            type: 'success'
+                        });
+                   
+                   //  console.log(response);   
+                    // $('#reloadpaginate').html('');
+                    // $('#ModalAddPembayaran').modal('hide');
+                    // $('#reloadpaginate').load('{!!  url('/'); !!}'+"/pembayaran/show");
+      },
+      error: function (data) {
+      $("#errMsg").prop('hidden', false);
+                    // $(".messagebox").show();
+      $(".showloading").prop('disabled', true);
+      $("#modal_create_expedition").scrollTop(0);
+      $('#ShowErrordata').html('');
+      $('.messagebox').show().addClass('alert-danger');
+          var messages = jQuery.parseJSON(data.responseText);
+      $('#ShowErrordata').html(messages.message);
+      }
+    });
+});
+
+//simpan data
+
 
    
-
 
 
 </script>
@@ -175,5 +209,38 @@ $(document).ready(function() {
                 });
         }
 
+
+    function HitungTotalKembalian()
+    {
+     var Cash = $('#pembayaran').val();
+     var TotalBayar = $('#total').val();
+     var Selisih = 0; 
+      if(parseInt(Cash) >= parseInt(TotalBayar)){
+        Selisih = Cash - TotalBayar;
+        $('#kembali1').val(to_rupiah(Selisih));
+        $('#kembali').val(Selisih);
+         document.getElementById('btnSimpan').innerHTML = '<button class="btn btn-success btn-round " id="simpanPembayaran"><i class="fa fa-plus"></i>Simpan</button>';
+
+      } else {
+        $('#kembali').val('');
+      }
+    
+}
+
+function to_rupiah(angka){
+    var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
+    var rev2    = '';
+    for(var i = 0; i < rev.length; i++){
+        rev2  += rev[i];
+        if((i + 1) % 3 === 0 && i !== (rev.length - 1)){
+            rev2 += '.';
+        }
+    }
+    return 'Rp. ' + rev2.split('').reverse().join('');
+}
+
+
     </script>
+
+
 @endsection

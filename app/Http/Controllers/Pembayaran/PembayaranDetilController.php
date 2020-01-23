@@ -214,6 +214,7 @@ class PembayaranDetilController extends Controller
             $findData = Jasa::find($request->kode);
             $kategori =  $findData->jasakatagori->nama_jasakatagori;
             $nama =  $findData->nama_jasa;
+
         }
         
         if($request->diskon == NULL){
@@ -236,6 +237,9 @@ class PembayaranDetilController extends Controller
                 'pasien_net'=> 0,
                 'subtotal'=> $total,
                 'diskon' => $diskon,
+                'fee_staff'=> $findData->fee_staff,
+                'fee_dokter'=> $findData->fee_dokter,
+                'fee_asisten'=> $findData->fee_asisten,
                 'users_id'=> auth()->user()->id,
             ]);
 

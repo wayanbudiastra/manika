@@ -78,12 +78,15 @@
                             <!-- <td>{{hitung_usia($k->tgl_lahir)}}</td> -->
                             <td>{{tgl_indo($k->tgl_reg)}}</td>
                             <td>
-                            <form id="cencel-regitrasi" action=" {{url('pembayaran/lanjut/'.$k->id)}}" method="post">
+                          <!--   <form id="cencel-regitrasi" action=" {{url('pembayaran/lanjut/'.$k->id)}}" method="post">
                                                 {{csrf_field()}}
+                                                <input type="hidden" name="id" value="{{$k->id}}">
                                                 
-                                                <button type="button" class="btn btn-success btn-xs" onclick="confirmCencel('cencel-regitrasi')">Proses</button>
-                                            </form>
-                            
+                                               <!--  <button type="button" class="btn btn-success btn-xs" onclick="confirmCencel('cencel-regitrasi')">Proses</button> -->
+                         <!--    </form> -->
+                             
+                             <button title="Input Pembayaran"class="btn btn-outline-success lanjut" data-id="{{$k->id}}">
+                             <i class="fa fa-save"></i></button>
                             </td>
                             </tr>
                             
@@ -113,6 +116,68 @@ $(document).ready(function() {
       $('#basic-datatables').DataTable({
       });
 
+
+      $(document).on('click', '.lanjut', function (event) {
+                        event.preventDefault();
+                        var $this = $(this);
+                        var id = $this.data('id');
+
+                        console.log(id);
+
+
+                swal({
+                 title: 'Apakah Anda Yakin Melajutkan Pembayaran?',
+                  text: "Registrasi akan di closing!",
+                  type: 'warning',
+                  buttons:{
+                  confirm: {
+                   text : 'Yes, Lanjutkan!',
+                    className : 'btn btn-success'
+                  },
+                  cancel: {
+                  visible: true,
+                  className: 'btn btn-danger'
+                 }
+              }
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                       // $('#'+item_id).submit();
+                       // console.log(id);
+                         $.ajax({
+                            url: '/lanjut-pembayaran/'+ id,
+                            data: {
+                            //"id": id,
+                           // "_token": $("input[name='_token']").val(),
+                            },
+                            type: 'GET',
+                            success: function (response) {
+
+                               swal(
+                                      'Input berhasil!',
+                                                'Pembayaran Berhasil di tambahkan.',
+                                                'success'
+                                            )
+                                           console.log(response);
+                                            location.reload();  
+
+                                        },
+                                        error: function (response) {
+                                          var json_data = response;
+                                          console.log(json_data);
+
+                                            swal(
+                                                'Terjadi Kesalahan!',
+                                                'Silahkan lakukan open kas telebih dahulu.',
+                                                    'error'
+                                                )
+},
+
+                                    })
+
+                    } 
+                });
+  });
 // $(document).ready(function() {
 //     $('#datatable').DataTable({
 //         processing:true,
@@ -171,6 +236,8 @@ $(document).ready(function() {
       });
     });
 
+ 
+
 
 </script>
 
@@ -194,6 +261,8 @@ $(document).ready(function() {
                 .then((willDelete) => {
                     if (willDelete) {
                         $('#'+item_id).submit();
+
+
                     } 
                 });
         }

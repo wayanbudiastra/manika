@@ -30,7 +30,8 @@
                                 <label>Item</label>
                                 <div class="input-group">
                                     <input type="hidden" name="kode">
-                                    <input type="hidden" name="pembayaran_id" value="{{$idx}}">
+                                    <input type="hidden" name="produk_item_id">
+                                    <input type="hidden" name="penerimaan_id" value="{{$idx}}">
                                     <input style="cursor: pointer;" type="text" class="form-control" placeholder="Item" name="nama_item"
                                            id="showmodalitembyinput">
                                     <div class="input-group-prepend">
@@ -44,26 +45,57 @@
 
                             </div>
                         </div>
-                         <div class="col-md-6">
+                          <div class="col-md-6">
+                              <div class="form-group form-group-default">
+                                  <label>Satuan Besar</label>
+                                  <select class="form-control" name="satuan_besar_id" required>
+                                      <option value=" ">-</option>
+                                      @foreach($satuanbesar as $row)
+                                          <option value="{{$row->id}}">{{$row->nama_satuan_besar}}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
                             <div class="form-group form-group-default">
-                                <label>harga jual</label>
-                                <input name="harga_jual" type="text" class="form-control" id="rupiahtindakan"
-                                       placeholder="Harga" readonly>
+                                <label>Isi Satuan</label>
+                                <input name="isi_satuan" type="text" class="form-control" value="1" onkeypress='validate(event)'
+                                       placeholder="Qty">
                             </div>
                         </div>
-                        <input type="hidden" name="transaksi" value="obat">
-                        <div class="col-md-6">
+                          <div class="col-md-6">
+                            <div class="form-group form-group-default">
+                                <label>Satuan Kecil</label>
+                                <select class="form-control" name="satuan_kecil_id" required>
+                                    <option value=" ">-</option>
+                                    @foreach($satuankecil as $row)
+                                        <option value="{{$row->id}}">{{$row->nama_satuan_kecil}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+                         <div class="col-md-6">
+                            <div class="form-group form-group-default">
+                                <label>harga beli</label>
+                                <input name="harga_beli" type="text" class="form-control"
+                                       placeholder="Harga" >
+                            </div>
+                        </div>
+                       
+                       <!--  <div class="col-md-6">
                             <div class="form-group form-group-default">
                                 <label>Diskon</label>
                                 <input name="diskon" type="text" class="form-control" id="rupiahobat"
                                        placeholder="Diskon">
                             </div>
-                        </div>
+                        </div> -->
 
 
                         <div class="col-md-6">
                             <div class="form-group form-group-default">
-                                <label>Qty</label>
+                                <label>Qty diterima</label>
                                 <input name="qty" type="text" class="form-control" value="1" onkeypress='validate(event)'
                                        placeholder="Qty">
                             </div>
@@ -80,12 +112,12 @@
     </div>
 </div>
 <script>
-var rupiahtindakan = document.getElementById('rupiahobat');
-rupiahtindakan.addEventListener('keyup', function(e){
-			// tambahkan 'Rp.' pada saat form di ketik
-			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-			rupiahtindakan.value = formatRupiah(this.value, 'Rp. ');
-		});
+// var rupiahtindakan = document.getElementById('rupiahobat');
+// rupiahtindakan.addEventListener('keyup', function(e){
+// 			// tambahkan 'Rp.' pada saat form di ketik
+// 			// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+// 			rupiahtindakan.value = formatRupiah(this.value, 'Rp. ');
+// 		});
 
 		/* Fungsi formatRupiah */
 		function formatRupiah(angka, prefix){
@@ -124,7 +156,7 @@ rupiahtindakan.addEventListener('keyup', function(e){
         $("#showmodalitembybutton").click(function (event) {
             event.preventDefault();
             $("#showmodalitembybutton").prop('disabled', true);
-            $('#loadmodaltembyaddtransaksi').load("/load-modal-item-by-add-transaksi");
+            $('#loadmodaltembyaddtransaksi').load("/load-modal-item-by-add-penerimaan");
         });
         $("#SubmitCreateTransaksi").click(function (e) {
             $('.messagebox').removeClass('alert-danger', 'alert-success');
@@ -132,7 +164,7 @@ rupiahtindakan.addEventListener('keyup', function(e){
             $(".SubmitCreateTransaksi").attr("disabled", true);
             $(".showloading").prop('disabled', false);
             $.ajax({
-                url: '/pembayaran-detil',
+                url: '/penerimaan-detil',
                 data: new FormData($("#CreateDataTransaksi")[0]),
                 dataType: 'json',
                 async: false,
@@ -140,6 +172,8 @@ rupiahtindakan.addEventListener('keyup', function(e){
                 processData: false,
                 contentType: false,
                 success: function (response) {
+
+                   // console.log(response);
 
                         $(".showloading").prop('disabled', true);
                         $(".SubmitCreateTransaksi").attr("disabled", false);
@@ -152,10 +186,10 @@ rupiahtindakan.addEventListener('keyup', function(e){
                             time: 5000,
                             type: 'success'
                         });
-                        $('#ModalAddTransaksi').modal('hide');
+                        $('#ModalAddTransaksi').modal('hide')
                         $('.modal-backdrop').remove();
                     $('#reloadpaginate').html('');
-                    $('#reloadpaginate').load("/pembayaran_detil/"+'{!! Crypt::encrypt($idx) !!}'+"/edit");
+                    $('#reloadpaginate').load("/penerimaan/"+'{!! Crypt::encrypt($idx) !!}'+"/edit");
                 },
                 error: function (data) {
                     $("#errMsg").prop('hidden', false);

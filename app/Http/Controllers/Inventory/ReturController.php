@@ -75,9 +75,35 @@ class ReturController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
         //
+         $idx = Crypt::decrypt($id);
+        $data = Penerimaan::find($idx);
+        $row = Penerimaan_detil::where('penerimaan_id',$idx)->get();
+        $cekposting = Penerimaan_detil::where('penerimaan_id',$data->id)->where('aktif','N')->count();
+        $total = Penerimaan_detil::where('penerimaan_id',$data->id)->sum("subtotal");
+        //dd($row);
+
+        if($request->ajax()){
+            return view('inventory.retur.paginate',
+                ['data' => $data,
+                 'row' => $row,
+                 'total' => $total,
+                 'no' => 0,
+                 'cekposting' => $cekposting
+                ]);
+        }
+
+        return view('inventory.retur.edit', ['data' => $data,
+            'row' => $row,
+            'no' => 0,
+            'total' => $total,
+            'title' => 'Add Item Detil penerimaan',
+            'subtitle' => 'List Item Detil penerimaan',
+            'cekposting' => $cekposting
+            ]);
+
     }
 
     /**

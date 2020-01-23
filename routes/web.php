@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +37,7 @@ Route::get('/login', 'AuthController@index')->name('login');
 Route::post('/postlogin','AuthController@postlogin');
 // Route::post('/postlokasi', 'AuthController@postlokasi');
 Route::get('/logout','AuthController@logout');
+
 
 Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
    
@@ -140,6 +142,11 @@ Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
         Route::resource('staff', 'StaffController');
         Route::get('staff/{id}/edit', 'StaffController@edit');
         Route::post('staff/{id}/update', 'StaffController@update');
+         
+         //perawat
+        Route::resource('perawat', 'PerawatController');
+        Route::get('perawat/{id}/edit', 'PerawatController@edit');
+        Route::post('perawat/{id}/update', 'PerawatController@update');
 
         //produkItem
         Route::resource('produkitem', 'ProdukItemController');
@@ -197,9 +204,11 @@ Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
         Route::resource('pembayaran', 'PembayaranController');
         Route::get('pembayaran/{id}/edit', 'PembayaranController@edit');
         Route::post('pembayaran/{id}/update', 'PembayaranController@update');
+         Route::post('pembayaran/lanjut/{id}', 'PembayaranController@lanjut');
         Route::get('pembayaran/show', 'PembayaranController@show');
         Route::get('pembayaran/proses', 'PembayaranController@proses');
-        Route::post('pembayaran/lanjut/{id}','PembayaranController@lanjut'); 
+        Route::get('lanjut-pembayaran/{id}','PembayaranController@lanjut_ajax'); 
+        Route::post('pembayaran-simpam-invoice','PembayaranController@SimpanInvoice'); 
         Route::get('load-modal-data-pembayaran/{id}', 'PembayaranController@showmodalAddpembayaran');
 
         //Pembayaran Detil
@@ -214,6 +223,22 @@ Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
         Route::post('hapus-pembayaran-detail/{id}', 'PembayaranDetilController@DeletePembayaranDetail');
         Route::post('posting-pembayaran-detail/{id}', 'PembayaranDetilController@Posting');
         Route::get('pembayaran_detil/printprev/{id}', 'PembayaranDetilController@printprev');
+
+
+         //Invoice
+        Route::resource('invoice', 'InvoiceController');
+        Route::get('invoice/show/{id}', 'InvoiceController@show');
+        Route::get('invoice/edit/{id}', 'InvoiceController@edit');
+        Route::post('invoice/{id}/update', 'InvoiceController@update');
+        Route::get('/cobapdf',function () {
+
+            Fpdf::AddPage();
+            Fpdf::SetFont('Courier', 'B', 18);
+            Fpdf::Cell(50, 25, 'Hello World!');
+            Fpdf::Output();
+
+        });
+
 
          Route::resource('penerimaan1', 'PenerimaanController');
 

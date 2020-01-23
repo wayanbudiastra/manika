@@ -11,6 +11,7 @@ use \App\User;
 use Illuminate\Support\Facades\Crypt;
 use App\model\MasterData\Dokter;
 use App\model\MasterData\Poli;
+use App\model\MasterData\Perawat;
 
 
 class Registrasi1Controller extends Controller
@@ -49,11 +50,13 @@ class Registrasi1Controller extends Controller
         $data = Pasien::find($idx);
         $dokter = Dokter::where('aktif','=','Y')->get();
         $poli = Poli::where('aktif','=','Y')->get();
+        $perawat = Perawat::where('aktif','=','Y')->get();
          //dd($dokter);
         $periode = GetPeriode(); 
         return view('registrasi.add_reg',['p' => $data,
             'd'=>$dokter,
             'pol'=>$poli,
+            'perawat'=>$perawat,
             'noreg'=>  max_noreg($periode),
             'subtitle'=>'Data Pasien',
             'title'=>'Add Registrasi Pasien']);
@@ -64,11 +67,13 @@ class Registrasi1Controller extends Controller
        
         $dokter = Dokter::where('aktif','=','Y')->get();
         $poli = Poli::where('aktif','=','Y')->get();
+         $perawat = Perawat::where('aktif','=','Y')->get();
          //dd($dokter);
         $periode = GetPeriode(); 
         return view('registrasi.add_reg_new',[
             'd'=>$dokter,
             'pol'=>$poli,
+            'perawat'=>$perawat,
             'noreg'=>  max_noreg($periode),
             'subtitle'=>'Data Pasien',
             'title'=>'Add Registrasi Pasien']);
@@ -130,6 +135,7 @@ class Registrasi1Controller extends Controller
         $registrasi->pasien_id = $pasien->id;
         $registrasi->dokter_id = $request->dokter_id;
         $registrasi->poli_id = $request->poli_id;
+        $registrasi->perawat_id = $request->perawat_id;
         $registrasi->keterangan = $request->keterangan;
         $registrasi->tgl_reg = date('Y-m-d');
         $registrasi->users_id = auth()->user()->id;
@@ -198,10 +204,12 @@ class Registrasi1Controller extends Controller
        $data = Registrasi1::find($idx);
        $dokter = Dokter::where('aktif','=','Y')->get();
        $poli = Poli::where('aktif','=','Y')->get();
+       $perawat = Perawat::where('aktif','=','Y')->get();
        //dd($data);
         return view('registrasi.edit', ['data' => $data,
             'd'=> $dokter,
             'pol'=> $poli,
+            'perawat'=>$perawat,
          'title' => 'Edit Registrasi', 
          'subtitle' => 'Form Registrasi']);
     }

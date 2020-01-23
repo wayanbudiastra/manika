@@ -26,7 +26,15 @@ class PenerimaanController extends Controller
     public function index()
     {
         //
-       
+        $data = penerimaan::where('aktif','Y')->get();
+        //dd($data);
+        return view('inventory.penerimaan.index',[
+            'data' => $data,
+            'no' => 0,
+            'subtitle'=>'Data Penerimaan',
+            'title'=>'List Penerimaan Produk']);
+
+    }
 
     /**
      * Show the form for creating a new resource.

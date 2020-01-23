@@ -22,6 +22,9 @@ class PembayaranDetil extends Model
             'payer_net',
             'pasien_net',
             'subtotal',
+            'fee_dokter',
+            'fee_asisten',
+            'fee_staff',
             'aktif',
             'users_id'
         ];
