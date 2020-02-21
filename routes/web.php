@@ -256,27 +256,27 @@ Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
         // route inventori
       Route::group(['namespace' => 'Inventory'], function () {
 
-        // Route::resource('penerimaan', 'PenerimaanController');
-        // Route::get('penerimaan/create', 'PenerimaanController@create');
-        // Route::get('penerimaan/{id}/edit', 'PenerimaanController@edit');
-        // Route::post('penerimaan/{id}/update', 'PenerimaanController@update');
-        // Route::get('penerimaan/list', 'PenerimaanController@list');
-        // Route::get('penerimaan/proses', 'PenerimaanController@proses');
-        // Route::get('penerimaan/prosesdetil/{id}', 'PenerimaanController@prosesdetil');
-        // Route::post('penerimaan/store','PenerimaanController@store'); 
+        Route::resource('penerimaan', 'PenerimaanController');
+        Route::get('penerimaan/create', 'PenerimaanController@create');
+        Route::get('penerimaan/{id}/edit', 'PenerimaanController@edit');
+        Route::post('penerimaan/{id}/update', 'PenerimaanController@update');
+        Route::get('penerimaan/list', 'PenerimaanController@list');
+        Route::get('penerimaan/proses', 'PenerimaanController@proses');
+        Route::get('penerimaan/prosesdetil/{id}', 'PenerimaanController@prosesdetil');
+        Route::post('penerimaan/store','PenerimaanController@store'); 
 
 
         Route::resource('penerimaan_detil', 'PenerimaanDetilController');
         //Pembayaran Detil
-        // Route::get('penerimaan_detil/{id}/edit', 'PembayaranDetilController@edit');
-        // Route::get('load-modal-data-create-penerimaan/{id}', 'PenerimaanDetilController@showmodalAddTransaksi');
-        // Route::get('load-modal-item-by-add-penerimaan', 'PenerimaanDetilController@ShowModalItemByAddTransaksi');
-        // Route::post('penerimaan-detil', 'PenerimaanDetilController@AddPenerimaanDetail');
-        // Route::get('penerimaan_detil/', 'PenerimaanDetilController@index');
-        // Route::post('penerimaan_detil/{id}/update', 'PenerimaanDetilController@update');
-        // Route::post('hapus-penerimaan-detail/{id}', 'PenerimaanDetilController@DeletePenerimaanDetail');
-        // Route::post('posting-penerimaan-detail/{id}', 'PenerimaanDetilController@Posting');
-        // Route::get('penerimaan_detil/printprev/{id}', 'PenerimaanDetilController@printprev');
+        Route::get('penerimaan_detil/{id}/edit', 'PembayaranDetilController@edit');
+        Route::get('load-modal-data-create-penerimaan/{id}', 'PenerimaanDetilController@showmodalAddTransaksi');
+        Route::get('load-modal-item-by-add-penerimaan', 'PenerimaanDetilController@ShowModalItemByAddTransaksi');
+        Route::post('penerimaan-detil', 'PenerimaanDetilController@AddPenerimaanDetail');
+        Route::get('penerimaan_detil/', 'PenerimaanDetilController@index');
+        Route::post('penerimaan_detil/{id}/update', 'PenerimaanDetilController@update');
+        Route::post('hapus-penerimaan-detail/{id}', 'PenerimaanDetilController@DeletePenerimaanDetail');
+        Route::post('posting-penerimaan-detail/{id}', 'PenerimaanDetilController@Posting');
+        Route::get('penerimaan_detil/printprev/{id}', 'PenerimaanDetilController@printprev');
 
 
         //retur
@@ -287,10 +287,10 @@ Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
 
 
         //kartu stok
-        // Route::resource('kartustok', 'Kartustok');
-        // Route::get('kartustok/cari', 'Kartustok@cari');
-        // Route::get('kartustok/printprev/{id}', 'Kartustok@printprev');
-        // Route::get('kartustok/excel/{id}', 'Kartustok@excel');
+        Route::resource('kartustok', 'Kartustok');
+        Route::get('kartustok/cari', 'Kartustok@cari');
+        Route::get('kartustok/printprev/{id}', 'Kartustok@printprev');
+        Route::get('kartustok/excel/{id}', 'Kartustok@excel');
        
       });
 
