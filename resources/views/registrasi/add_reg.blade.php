@@ -45,7 +45,7 @@
                 <input type="text" class="form-control" id="kode"  name="kode" placeholder="Kode" value=" {{$noreg}}" readonly="readonly">
                  </div>
                  <div class="form-group">
-                 <label for="exampleInputEmail1">dokter</label>
+                 <label for="exampleInputEmail1">Dokter</label>
                  <select class="form-control select" style="min-width:350px;" required id="idDokter" name="dokter_id">
                           <option></option>         
                              @foreach($d as $a)
@@ -55,7 +55,7 @@
                   </select> 
                   </div>
                   <div class="form-group">
-                  <label for="exampleInputEmail1">Pilih Poli</label>
+                  <label for="exampleInputEmail1">Poli</label>
                   <select class="form-control select" name="poli_id" id="idPoli">
                               <option></option>  
                               @foreach($pol as $a)
@@ -66,7 +66,7 @@
                   </div>    
 
                    <div class="form-group">
-                  <label for="exampleInputEmail1">Pilih perawat</label>
+                  <label for="exampleInputEmail1">Perawat</label>
                   <select class="form-control select" name="perawat_id" id="idPerawat">
                               <option></option>  
                               @foreach($perawat as $a)
@@ -75,6 +75,29 @@
                              @endforeach
                   </select>
                   </div>    
+
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">Terapis</label>
+                  <select class="form-control select" name="terapis_id" id="idTerapis">
+                              <option></option>  
+                              @foreach($terapis as $a)
+                              
+                                <option value='{{$a->id}}' >{{$a->nama_terapis}}</option> 
+                              @endforeach
+                  </select>
+                  </div>  
+
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">Asisten Dokter</label>
+                  <select class="form-control select" name="asdok_id" id="idAsdok">
+                              <option></option>  
+                              @foreach($asdok as $a)
+                              
+                                <option value='{{$a->id}}' >{{$a->nama_asdok}}</option> 
+                              @endforeach
+                  </select>
+                  </div>  
+
                   <div class="form-group">
                   <label for="exampleInputEmail1">Keterangan</label>
                   <textarea name="keterangan" class="form-control" id="keterangan" cols="30" rows="5"></textarea>
@@ -232,5 +255,7 @@ $(".date").datepicker({
 $('#idDokter').select2({placeholder: "Pilih Dokter...", width: '100%'});
 $('#idPoli').select2({placeholder: "Pilih Poli...", width: '100%'});
 $('#idPerawat').select2({placeholder: "Pilih Perawat...", width: '100%'});
+$('#idTerapis').select2({placeholder: "Pilih Terapis...", width: '100%'});
+$('#idAsdok').select2({placeholder: "Pilih Asisten Dokter...", width: '100%'});
 </script>
 @endsection

@@ -317,6 +317,16 @@
 													</a>
 												</li>
 												<li>
+													<a href="{{url('/terapis')}}">
+														<span class="sub-item">Terapis</span>
+													</a>
+												</li>
+												<li>
+													<a href="{{url('/asisten-dokter')}}">
+														<span class="sub-item">Asisten Dokter</span>
+													</a>
+												</li>
+												<li>
 													<a href="{{url('/users')}}">
 														<span class="sub-item">User Login</span>
 													</a>

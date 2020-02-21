@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Crypt;
 use App\model\MasterData\Dokter;
 use App\model\MasterData\Poli;
 use App\model\MasterData\Perawat;
+use App\model\MasterData\Terapis;
+use App\model\MasterData\Asdok;
 
 
 class Registrasi1Controller extends Controller
@@ -51,12 +53,16 @@ class Registrasi1Controller extends Controller
         $dokter = Dokter::where('aktif','=','Y')->get();
         $poli = Poli::where('aktif','=','Y')->get();
         $perawat = Perawat::where('aktif','=','Y')->get();
+        $terapis = Terapis::where('aktif','=','Y')->get();
+        $asdok = Asdok::where('aktif','=','Y')->get();
          //dd($dokter);
         $periode = GetPeriode(); 
         return view('registrasi.add_reg',['p' => $data,
             'd'=>$dokter,
             'pol'=>$poli,
             'perawat'=>$perawat,
+            'terapis'=>$terapis,
+            'asdok'=>$asdok,
             'noreg'=>  max_noreg($periode),
             'subtitle'=>'Data Pasien',
             'title'=>'Add Registrasi Pasien']);
@@ -67,13 +73,17 @@ class Registrasi1Controller extends Controller
        
         $dokter = Dokter::where('aktif','=','Y')->get();
         $poli = Poli::where('aktif','=','Y')->get();
-         $perawat = Perawat::where('aktif','=','Y')->get();
+        $perawat = Perawat::where('aktif','=','Y')->get();
+        $terapis = Terapis::where('aktif','=','Y')->get();
+        $asdok = Asdok::where('aktif','=','Y')->get();
          //dd($dokter);
         $periode = GetPeriode(); 
         return view('registrasi.add_reg_new',[
             'd'=>$dokter,
             'pol'=>$poli,
             'perawat'=>$perawat,
+            'terapis'=>$terapis,
+            'asdok'=>$asdok,
             'noreg'=>  max_noreg($periode),
             'subtitle'=>'Data Pasien',
             'title'=>'Add Registrasi Pasien']);
@@ -98,7 +108,7 @@ class Registrasi1Controller extends Controller
 
     public function create(Request $request)
     {
-        //
+        dd($request->all());
         $per = GetPeriode();
         $request->request->add(['no_registrasi' => max_noreg(),
                                 'tgl_reg'=> date('Y-m-d'),
@@ -114,6 +124,7 @@ class Registrasi1Controller extends Controller
     public function create_new(Request $request)
     {
         //reg pasien & Registrasi 
+        // dd($request->all());
         try{
         $pasien = new Pasien;
         $pasien->nocm = maxnocm();;
@@ -136,12 +147,14 @@ class Registrasi1Controller extends Controller
         $registrasi->dokter_id = $request->dokter_id;
         $registrasi->poli_id = $request->poli_id;
         $registrasi->perawat_id = $request->perawat_id;
+        $registrasi->terapis_id = $request->terapis_id;
+        $registrasi->asdok_id = $request->asdok_id;
         $registrasi->keterangan = $request->keterangan;
         $registrasi->tgl_reg = date('Y-m-d');
         $registrasi->users_id = auth()->user()->id;
         $registrasi->periode = $per;
         $registrasi->save();
-        //dd($registrasi);
+        // dd($registrasi);
         return redirect('/registrasi/list')->with('sukses', 'Data Berhasil di input');
         }
         catch (\Exception $e) {
