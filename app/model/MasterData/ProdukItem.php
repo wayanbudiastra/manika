@@ -56,4 +56,9 @@ class ProdukItem extends Model
         return $this->belongsToMany('App\model\MasterData\Suplier','produk_suplier','produk_item_id','suplier_id');
     }
 
+    public function ajustment()
+    {
+        return $this->belongsToMany('App\model\Inventory\Ajustment','produk_item_id');
+    }
+
 }

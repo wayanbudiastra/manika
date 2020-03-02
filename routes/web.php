@@ -287,10 +287,19 @@ Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
 
 
         //kartu stok
-        Route::resource('kartustok', 'Kartustok');
-        Route::get('kartustok/cari', 'Kartustok@cari');
-        Route::get('kartustok/printprev/{id}', 'Kartustok@printprev');
-        Route::get('kartustok/excel/{id}', 'Kartustok@excel');
+        Route::resource('kartustok', 'KartustokController');
+        Route::get('kartustok/cari', 'KartustokController@cari');
+        Route::get('kartustok/printprev/{id}', 'KartustokController@printprev');
+        Route::get('kartustok/excel/{id}', 'KartustokController@excel');
+
+
+        //ajustment
+        Route::resource('ajustment', 'AjustmentController');
+        Route::get('ajustment/{id}/edit', 'AjustmentController@edit');
+        Route::post('ajustment/cari', 'AjustmentController@cari');
+        Route::post('ajustment/store','AjustmentController@store'); 
+        // Route::get('ajustment/printprev/{id}', 'AjustmentController@printprev');
+        // Route::get('ajustment/excel/{id}', 'AjustmentController@excel');
        
       });
 

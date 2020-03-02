@@ -419,8 +419,8 @@
 										</a>
 									</li>
 									<li>
-										<a href="{{url('/adjustment')}}">
-											<span class="sub-item">Adustment</span>
+										<a href="{{url('/ajustment')}}">
+											<span class="sub-item">Ajustment</span>
 										</a>
 									</li>
 									<li>
