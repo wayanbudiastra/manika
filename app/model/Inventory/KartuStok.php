@@ -21,4 +21,9 @@ class KartuStok extends Model
 	'keterangan',
 	'users_id'
 	];
+
+	public function produk_item()
+    {
+        return $this->belongsTo('App\model\MasterData\Produkitem', 'produk_item_id');
+    }
 }

@@ -288,8 +288,8 @@ Route::group(['middleware'=> ['auth','checkRole:admin']],function(){
 
         //kartu stok
         Route::resource('kartustok', 'KartustokController');
-        Route::get('kartustok/cari', 'KartustokController@cari');
-        Route::get('kartustok/printprev/{id}', 'KartustokController@printprev');
+        Route::post('kartustok/cari', 'KartustokController@cari');
+        Route::get('kartustok/printview/{id}', 'KartustokController@printview');
         Route::get('kartustok/excel/{id}', 'KartustokController@excel');
 
 

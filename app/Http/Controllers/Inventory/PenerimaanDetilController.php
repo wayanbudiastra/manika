@@ -317,7 +317,7 @@ class PenerimaanDetilController extends Controller
         // dd($data);
          $detil = Penerimaan_detil::where('penerimaan_id',$idx)->orderby('id','ASC')->get();
 
-         //dd($detil);
+        //  dd($detil);
          $pdf = PDF::loadview('inventory.penerimaan_detil.printprev',
             ['data'=>$data,
              'detil'=>$detil,
