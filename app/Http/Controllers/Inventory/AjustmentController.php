@@ -193,18 +193,18 @@ class AjustmentController extends Controller
     {
         // $idx = Crypt::decrypt($id);
         $data = ProdukItem::findOrFail($id);
-        // dd($data);
-        $ajustment = Ajustment::orderBy('id', 'desc')->paginate(100);
+        $ajustment = Ajustment::where('produk_item_id', $data->id)->orderBy('id', 'desc')->paginate(100);
         $satuanbesar = SatuanBesar::where('aktif','=','Y')->get()->toArray();
         $satuankecil = SatuanKecil::where('aktif','=','Y')->get()->toArray();
         $produkkatagori = ProdukKatagori::where('aktif','=','Y')->get()->toArray();
         $maping = $data->getProdukSuplierAttribute();
         $list_suplier = Suplier::pluck('nama_suplier','id'); 
+        // dd($ajustment);
 
         //dd($maping); exit;
         return view('inventory.ajustment.edit')->with([
-             'data'     => $data,
-             'ajustment'     => $ajustment,
+             'data' => $data,
+             'ajustment' => $ajustment,
              'maping' => $maping,
              'list_suplier' => $list_suplier,
              'satuanbesar' => $satuanbesar,

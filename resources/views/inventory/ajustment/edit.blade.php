@@ -115,7 +115,7 @@
                         <tr>
                         <td>{{$no=$no+1}}</td>
                         <td>{{$k->tgl_ajust}}</td>
-                        <td>{{$k->produk_item_id}}</td>
+                        <td>{{$k->produk_item->nama_item}}</td>
                         <td>{{$k->jenis_ajust}}</td>
                         <td>{{$k->qty}}</td>
                         <td><center><a href="{{url('/ajustment/'.$k->id.'/edit')}}" class="btn btn-outline-danger delete"><i class="fa fa-trash"></i></a></center></td>
