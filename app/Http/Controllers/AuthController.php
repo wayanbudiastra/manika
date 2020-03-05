@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
- use Auth;
+use Auth;
 use Illuminate\Http\Request;
 use Session;
 
@@ -19,7 +19,8 @@ class AuthController extends Controller
            return redirect('/dashboard');
           // return 'login berhasil';
        }
-       return redirect('/');
+       return back()->with('error', 'Maaf, Username & Password salah!');
+    //    return redirect('/');
     }
 
     public function postlokasi(Request $request)
@@ -32,8 +33,8 @@ class AuthController extends Controller
             // $data = Session::all();
             // dd($data);
         }
-
-        return redirect('/');
+       return back()->with('error', 'Maaf, Username & Password salah!');
+    //    return redirect('/');
     }
 
     public function logout()

@@ -74,9 +74,8 @@
                                                 <td>{{$k->no_telp}}</td>
                                                 <td>{!!  ($k->aktif == "Y") ? '<span class="btn btn-success btn-round btn-xs">Ya</span>' : ('<span class="btn btn-danger btn-round btn-xs">Tidak</span>')!!}</td>
                                                 <td>
-						                            <button type="button" onclick="btnUbah('.$k->id.')" name="btnUbah"><i class="btn btn-warning btn-xs">Update</i></button>
-                                                    {{-- <center><a href="{{url('/asisten-dokter/'.$k->id.'/edit')}}"
-                                                               class="btn btn-warning btn-xs">Update</a></center> --}}
+						                            {{-- <button type="button" onclick="btnUbah('.$k->id.')" name="btnUbah"><i class="btn btn-warning btn-xs">Update</i></button> --}}
+                                                    <a href="{{url('asisten-dokter/'.Crypt::encrypt($k->id).'/edit')}}" class="btn btn-warning btn-xs btn-round">Update</a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -42,8 +42,13 @@
                 <div class="col-md-10">
                   <input type="hidden" class="form-control" id="id"  name="id" value="{{ $data->id }}">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Kode Produk</label>
+                    <label for="exampleInputEmail1">Kode Produk Item</label>
                     <input type="text" class="form-control" id="kode"  name="kode" value="{{ $data->kode }}" readonly="readonly">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Nama Produk Item</label>
+                    <input type="text" class="form-control" id="kode"  name="kode" value="{{ $data->nama_item }}" readonly="readonly">
                   </div>
 
                   <div class="form-group">

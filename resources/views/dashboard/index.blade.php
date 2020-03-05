@@ -523,6 +523,15 @@
 
 
 <script>
+	$(document).ready(function(){	
+		swal({
+			title: "Success!",
+			text: "Anda berhasil login ke sistem",
+			icon: "success",
+			button: false,
+			timer: 1500,
+		})
+	});
 		Circles.create({
 			id:'circles-1',
 			radius:45,

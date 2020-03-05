@@ -42,14 +42,14 @@
 					
 					
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="email">
+						<input class="input100" type="text" name="email" id="inputEmail">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Email</span>
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="password">
+						<input class="input100" type="password" name="password" id="inputPassword">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>
 					</div>
@@ -67,7 +67,7 @@
 			
 
 					<div class="container-login100-form-btn">
-						<button type="submit" class="login100-form-btn">
+						<button type="submit" class="login100-form-btn" id="btn-login">
 							Login
 						</button>
 					</div>
@@ -115,6 +115,59 @@
 	<script src="{{asset('/login/vendor/countdowntime/countdowntime.js')}}"></script>
 <!--===============================================================================================-->
 	<script src="{{asset('/login/js/main.js')}}"></script>
+<!--===============================================================================================-->
+	<script src="{{asset('/assets/js/plugin/sweetalert/sweetalert.min.js')}}"></script>
+
+	<script>
+		$(document).ready(function(){
+
+			$("#btn-login").on('click', function(e){
+				var email = $('#inputEmail').val()
+				var password = $('#inputPassword').val()
+
+				// $.ajax({
+				// 	url: "{{ url('/postlogin') }}",
+				// 	type: 'POST',
+				// 	data: {
+        		// 		"_token": "{{ csrf_token() }}",
+				// 	},
+				// 	dataType: 'JSON',
+				// 	success:function(data){
+				// 		console.log(data);
+				// 		swal("Success!", "Selamat datang", "success");
+				// 	},
+				// 	error:function(data){
+				// 		swal("Oops...", "Email dan Password salah :(", "error");
+				// 	}
+				// });
+				// e.preventDefault(); 
+
+				if(email == ''){
+					// alert('Alamat email harus diisi');
+					swal({
+						icon: 'error',
+						title: 'Oops...',
+						text: "Kolom email harus diisi!",
+						type: 'warning',
+						buttons: false,
+						timer: 1500
+					})
+				}else if(password == ''){
+					swal({
+						icon: 'error',
+						title: 'Oops...',
+						text: "Kolom password harus diisi!",
+						type: 'warning',
+						buttons: false,
+						timer: 1500
+					});
+				}else{
+					
+				}
+			});
+
+		});
+	</script>
 
 </body>
 </html>

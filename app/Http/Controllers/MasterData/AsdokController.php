@@ -9,6 +9,7 @@ namespace App\Http\Controllers\MasterData;
     use App\Http\Requests\MasterData\asdokRequest;
     use Yajra\DataTables\DataTables;
     use Illuminate\Support\Facades\Validator;
+    use Illuminate\Support\Facades\Crypt;
 
 class AsdokController extends Controller
 {
@@ -82,11 +83,80 @@ class AsdokController extends Controller
                 Asdok::create($request->all());
 
                 return redirect('/asisten-dokter')->with('sukses', 'Data Berhasil di input');
-            } catch (\Exception $e) {
-                // store errors to log
-                \Log::error('class : ' . AsdokController::class . ' method : create | ' . $e);
-
-                return redirect('/asisten-dokter')->with('gagal', 'Data Gagal di input');
-            }
+        }catch (\Exception $e) {
+            // store errors to log
+            \Log::error('class : ' . AsdokController::class . ' method : create | ' . $e);
+            return redirect('/asisten-dokter')->with('gagal', 'Data Gagal di input');
+        }
     }
+
+    public function edit($id)
+    {
+        $idx = Crypt::decrypt($id);
+        $data = Asdok::findOrFail($idx);
+        // dd($data);
+        return view('masterData.sdm.asisten-dokter.edit')->with([
+            'data'             => $data,
+            'title'            => 'Edit Asisten Dokter',
+            'subtitle'         => 'Form Asisten Dokter',
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // dd($request->all());
+        try {
+            $validator = Validator::make(request()->all(), [
+                'nik'             => 'required|numeric',
+                'nama_asdok'      => 'required',
+                'email'           => 'required|email',
+                'no_telp'         => 'required|numeric',
+                'alamat'          => 'required',
+                'tgl_lahir'       => 'required',
+                'tempat_lahir'    => 'required',
+            ]);
+            $attributeNames = array(
+                'nik'             => 'NIK',
+                'nama_asdok'      => 'Nama',
+                'email'           => 'Email',
+                'no_telp'         => 'Nomer Telepon',
+                'alamat'          => 'Alamat',
+                'tgl_lahir'       => 'Tanggal Lahir',
+                'tempat_lahir'    => 'Tempat Lahir',
+            );
+            $validator->setAttributeNames($attributeNames);
+            if ($validator->fails()) {
+                $message = $validator->errors();
+
+                return redirect('/asisten-dokter')->with('gagal','
+                    <p>' . $message->first('nik') . '</p>
+                    <p>' . $message->first('nama_asdok') . '</p>
+                    <p>' . $message->first('email') . '</p>
+                    <p>' . $message->first('no_telp') . '</p>
+                    <p>' . $message->first('alamat') . '</p>
+                    <p>' . $message->first('tgl_lahir') . '</p>
+                    <p>' . $message->first('tempat_lahir') . '</p>'
+                );
+            }
+            \Log::info($request->nik);
+            $idx = Crypt::decrypt($id);
+            $data = Asdok::findOrFail($idx);
+            $finduser = User::where('id', '=', $data->users_id)->first();
+            $nama_asdok = $finduser->name;
+            // dd($nama_asdok);
+            $data->update($request->all());
+            //update nama user
+            User::where('id', $finduser->id)
+            ->update([
+                'name'=>$request->nama_asdok,
+            ]);
+            // dd($data);
+            return redirect('/asisten-dokter')->with('sukses', 'Data Berhasil di Edit');
+        } catch (\Exception $e) {
+            // store errors to log
+            \Log::error('class : ' . DokterController::class . ' method : edit | ' . $e);
+            return redirect('/asisten-dokter')->with('gagal', 'Data gagal di Edit');
+        }
+    }
+
 }

@@ -9,6 +9,7 @@ namespace App\Http\Controllers\MasterData;
     use App\Http\Requests\MasterData\TerapisRequest;
     use Yajra\DataTables\DataTables;
     use Illuminate\Support\Facades\Validator;
+    use Illuminate\Support\Facades\Crypt;
 
 class TerapisController extends Controller
 {
@@ -88,6 +89,75 @@ class TerapisController extends Controller
 
                 return redirect('/terapis')->with('gagal', 'Data Gagal di input');
             }
+    }
+
+    public function edit($id)
+    {
+        $idx = Crypt::decrypt($id);
+        $data = Terapis::findOrFail($idx);
+        // dd($data);
+        return view('masterData.sdm.terapis.edit')->with([
+            'data'             => $data,
+            'title'            => 'Edit Terapis',
+            'subtitle'         => 'Form Terapis',
+
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // dd($request->all());
+        try {
+            $validator = Validator::make(request()->all(), [
+                'nik'             => 'required|numeric',
+                'nama_terapis'    => 'required',
+                'email'           => 'required|email',
+                'no_telp'         => 'required|numeric',
+                'alamat'          => 'required',
+                'tgl_lahir'       => 'required',
+                'tempat_lahir'    => 'required',
+            ]);
+            $attributeNames = array(
+                'nik'             => 'NIK',
+                'nama_terapis'     => 'Nama',
+                'email'           => 'Email',
+                'no_telp'         => 'Nomer Telepon',
+                'alamat'          => 'Alamat',
+                'tgl_lahir'       => 'Tanggal Lahir',
+                'tempat_lahir'    => 'Tempat Lahir',
+            );
+            $validator->setAttributeNames($attributeNames);
+            if ($validator->fails()) {
+                $message = $validator->errors();
+
+                return redirect('/terapis')->with('gagal','
+                    <p>' . $message->first('nik') . '</p>
+                    <p>' . $message->first('nama_terapis') . '</p>
+                    <p>' . $message->first('email') . '</p>
+                    <p>' . $message->first('no_telp') . '</p>
+                    <p>' . $message->first('alamat') . '</p>
+                    <p>' . $message->first('tgl_lahir') . '</p>
+                    <p>' . $message->first('tempat_lahir') . '</p>'
+                );
+            }
+            \Log::info($request->nik);
+            $idx = Crypt::decrypt($id);
+            $data = Terapis::findOrFail($idx);
+            $finduser = User::where('id', '=', $data->users_id)->first();
+            $nama_terapis = $finduser->name;
+            $data->update($request->all());
+            //update nama user
+            User::where('id', $finduser->id)
+            ->update([
+                'name'=>$request->nama_terapis,
+            ]);
+            // dd($data);
+            return redirect('/terapis')->with('sukses', 'Data Berhasil di Edit');
+        } catch (\Exception $e) {
+            // store errors to log
+            \Log::error('class : ' . DokterController::class . ' method : edit | ' . $e);
+            return redirect('/terapis')->with('gagal', 'Data gagal di Edit');
+        }
     }
 
     public function ubah(Request $request)

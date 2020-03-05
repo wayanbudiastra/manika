@@ -75,9 +75,8 @@
                                                 <td>{{$k->no_telp}}</td>
                                                 <td>{!!  ($k->aktif == "Y") ? '<span class="btn btn-success btn-round btn-xs">Ya</span>' : ('<span class="btn btn-danger btn-round btn-xs">Tidak</span>')!!}</td>
                                                 <td>
-						                            <button type="button" onclick="btnUbah('.$k->id.')" name="btnUbah"><i class="btn btn-warning btn-xs">Update</i></button>
-                                                    {{-- <center><a href="{{url('/terapis/'.$k->id.'/edit')}}"
-                                                               class="btn btn-warning btn-xs">Update</a></center> --}}
+						                            {{-- <button type="button" onclick="btnUbah('.$k->id.')" name="btnUbah"><i class="btn btn-warning btn-xs">Update</i></button> --}}
+                                                    <a href="{{url('terapis/'.Crypt::encrypt($k->id).'/edit')}}" class="btn btn-warning btn-xs btn-round">Update</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -195,25 +194,25 @@
                     });
                 });
                 
-                function btnUbah(id){
-                    $('#addRowModal').modal('toggle');
-                    var APP_URL = {!! json_encode(url('/terapis/get-detail')) !!}
-                    idterapis = id;
+                // function btnUbah(id){
+                //     $('#addRowModal').modal('toggle');
+                //     var APP_URL = {!! json_encode(url('/terapis/get-detail')) !!}
+                //     idterapis = id;
 
-                    $.ajax({
-                    type:'POST',
-                    url: APP_URL,
-                    // url: base_url + '/terapis/get-detail',
-                    data:{idterapis:idterapis, "_token": "{{ csrf_token() }}",},
-                        success:function(data) {
-                            $('#nik').val(data.data.nik);
-                            $('#nama_terapis').val(data.data.nama_terapis);
-                            $('#email').val(data.data.email);
-                            $('#no_telp').val(data.data.no_telp);
-                            $('#alamat').val(data.data.alamat);
-                        }
-                    });
-                }
+                //     $.ajax({
+                //     type:'POST',
+                //     url: APP_URL,
+                //     // url: base_url + '/terapis/get-detail',
+                //     data:{idterapis:idterapis, "_token": "{{ csrf_token() }}",},
+                //         success:function(data) {
+                //             $('#nik').val(data.data.nik);
+                //             $('#nama_terapis').val(data.data.nama_terapis);
+                //             $('#email').val(data.data.email);
+                //             $('#no_telp').val(data.data.no_telp);
+                //             $('#alamat').val(data.data.alamat);
+                //         }
+                //     });
+                // }
 
                 $(document).ready(function () {
 
