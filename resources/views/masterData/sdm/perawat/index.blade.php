@@ -75,8 +75,8 @@
                                                 <td>{{$k->no_telp}}</td>
                                                 <td>{!!  ($k->aktif == "Y") ? '<span class="btn btn-success btn-round btn-xs">Ya</span>' : ('<span class="btn btn-danger btn-round btn-xs">Tidak</span>')!!}</td>
                                                 <td>
-                                                    <center><a href="{{url('/perawat/'.$k->id.'/edit')}}"
-                                                               class="btn btn-warning btn-xs">Update</a></center>
+                                                    <center><a href="{{url('perawat/'.Crypt::encrypt($k->id).'/edit')}}"
+                                                               class="btn btn-warning btn-xs btn-round">Update</a></center>
                                                 </td>
                                             </tr>
                                         @endforeach

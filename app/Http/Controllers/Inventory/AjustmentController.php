@@ -191,8 +191,8 @@ class AjustmentController extends Controller
      */
     public function edit($id)
     {
-        // $idx = Crypt::decrypt($id);
-        $data = ProdukItem::findOrFail($id);
+        $idx = Crypt::decrypt($id);
+        $data = ProdukItem::findOrFail($idx);
         $ajustment = Ajustment::where('produk_item_id', $data->id)->orderBy('id', 'desc')->paginate(100);
         $satuanbesar = SatuanBesar::where('aktif','=','Y')->get()->toArray();
         $satuankecil = SatuanKecil::where('aktif','=','Y')->get()->toArray();

@@ -36,7 +36,7 @@
                 <h4 class="card-title">{{$title}}</h4>
                 </div>
               </div>
-              <form action="{{ url('/kartustok/printview/'.$data->id) }}" target="_BLANK">
+              <form action="{{ url('/kartustok/printview/'.Crypt::encrypt($data->id)) }}" target="_BLANK">
                 <div class="card-body">
                   <div class="col-md-10">
                     <div class="form-group">

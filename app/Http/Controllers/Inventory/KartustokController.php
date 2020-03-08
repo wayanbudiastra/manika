@@ -110,8 +110,8 @@ class KartustokController extends Controller
      */
     public function edit($id)
     {
-        // $idx = Crypt::decrypt($id);
-        $data = ProdukItem::findOrFail($id);
+        $idx = Crypt::decrypt($id);
+        $data = ProdukItem::findOrFail($idx);
         $kartustok = KartuStok::where('produk_item_id', $data->id)->orderBy('id', 'desc')->paginate(100);
         $maping = $data->getProdukSuplierAttribute();
         // dd($kartustok);
@@ -152,10 +152,11 @@ class KartustokController extends Controller
 
     public function printview($id, Request $request)
     {
+        $idx = Crypt::decrypt($id);
         $dari_tgl = \Carbon\Carbon::parse($request->dari_tgl)->format('Y-m-d');
         $sampai_tgl = \Carbon\Carbon::parse($request->sampai_tgl)->format('Y-m-d');
 
-        $data = ProdukItem::findOrFail($id);
+        $data = ProdukItem::findOrFail($idx);
         // dd($data);
         $kartustok = KartuStok::where('produk_item_id', $data->id)
                 ->whereBetween('created_at', [$dari_tgl, $sampai_tgl])

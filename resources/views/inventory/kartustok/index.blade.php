@@ -71,7 +71,7 @@
                           <td>{{$k->produk_katagori->nama_produk_katagori}}</td>
                           <td>{{$k->keterangan}}</td>
                            <td>{!!  ($k->aktif == "Y") ? '<span class="btn btn-success  btn-round btn-xs">Ya</span>' : ('<span class="btn btn-danger  btn-round btn-xs">Tidak</span>')!!}</td>
-                          <td><center><a href="{{url('/kartustok/'.$k->id.'/edit')}}" class="btn btn-warning btn-round btn-xs fa fa-eye"> Lihat Kartustok</a></center></td>
+                          <td><center><a href="{{url('kartustok/'.Crypt::encrypt($k->id).'/edit')}}" class="btn btn-warning btn-round btn-xs fa fa-eye"> Lihat Kartustok</a></center></td>
                           </tr>
                           @endforeach
                       </tbody>

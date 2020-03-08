@@ -8,6 +8,7 @@
     use Illuminate\Http\Request;
     use Yajra\DataTables\DataTables;
     use Illuminate\Support\Facades\Validator;
+    use Illuminate\Support\Facades\Crypt;
 
 class PerawatController extends Controller
 {
@@ -124,7 +125,15 @@ class PerawatController extends Controller
      */
     public function edit($id)
     {
-        //
+        $idx = Crypt::decrypt($id);
+        $data = Perawat::findOrFail($idx);
+        // dd($data);
+        return view('masterData.sdm.perawat.edit')->with([
+            'data'             => $data,
+            'title'            => 'Edit Perawat',
+            'subtitle'         => 'Form Perawat',
+
+        ]);
     }
 
     /**
@@ -136,7 +145,59 @@ class PerawatController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        try {
+            $validator = Validator::make(request()->all(), [
+                'nik'             => 'required|numeric',
+                'nama_perawat'    => 'required',
+                'email'           => 'required|email',
+                'no_telp'         => 'required|numeric',
+                'alamat'          => 'required',
+                'tgl_lahir'       => 'required',
+                'tempat_lahir'    => 'required',
+            ]);
+            $attributeNames = array(
+                'nik'             => 'NIK',
+                'nama_perawat'     => 'Nama',
+                'email'           => 'Email',
+                'no_telp'         => 'Nomer Telepon',
+                'alamat'          => 'Alamat',
+                'tgl_lahir'       => 'Tanggal Lahir',
+                'tempat_lahir'    => 'Tempat Lahir',
+            );
+            $validator->setAttributeNames($attributeNames);
+            if ($validator->fails()) {
+                $message = $validator->errors();
+
+                return redirect('/perawat')->with('gagal','
+                    <p>' . $message->first('nik') . '</p>
+                    <p>' . $message->first('nama_perawat') . '</p>
+                    <p>' . $message->first('email') . '</p>
+                    <p>' . $message->first('no_telp') . '</p>
+                    <p>' . $message->first('alamat') . '</p>
+                    <p>' . $message->first('tgl_lahir') . '</p>
+                    <p>' . $message->first('tempat_lahir') . '</p>'
+                );
+            }
+            \Log::info($request->nik);
+            $idx = Crypt::decrypt($id);
+            $data = Perawat::findOrFail($idx);
+            $finduser = User::where('id', '=', $data->users_id)->first();
+            $nama_perawat = $finduser->name;
+            // dd($nama_perawat);
+            $data->update($request->all());
+            //update nama user
+            User::where('id', $finduser->id)
+            ->update([
+                'name'=>$request->nama_perawat,
+            ]);
+            // dd($data);
+            return redirect('/perawat')->with('sukses', 'Data Berhasil di Edit');
+        } catch (\Exception $e) {
+            // store errors to log
+            \Log::error('class : ' . DokterController::class . ' method : edit | ' . $e);
+            return redirect('/perawat')->with('gagal', 'Data gagal di Edit');
+        }
     }
 
     /**
